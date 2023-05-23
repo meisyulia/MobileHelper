@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="移动数据"/>
+        <TextView
+            android:id="@+id/tv_status"
+            style="@style/tv_title"
+            android:text="关"
+            android:textColor="@color/grey"
+            android:drawableRight="@drawable/ic_right_32"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="信号强度"/>
+        <TextView
+            android:id="@+id/tv_rssi"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="卡槽数量"/>
+        <TextView
+            android:id="@+id/tv_slotCount"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="SIM卡数量"/>
+        <TextView
+            android:id="@+id/tv_simCount"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true"/>
+
+
+</LinearLayout>
