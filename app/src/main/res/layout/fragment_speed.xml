@@ -6,4 +6,60 @@
     android:background="@color/white">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="网络状态"/>
+        <TextView
+            android:id="@+id/tv_status"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:text="不可用"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        style="@style/view_1dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="上传速度"/>
+        <TextView
+            android:id="@+id/tv_upSpeed"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:text="0.0k/s"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        style="@style/view_1dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="下载速度"/>
+        <TextView
+            android:id="@+id/tv_downSpeed"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:text="0.0k/s"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        style="@style/view_1dp"/>
 </LinearLayout>

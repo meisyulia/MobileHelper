@@ -29,6 +29,7 @@ public class ModuleAdapter extends RecyclerView.Adapter {
 
     public ModuleAdapter(Context context, ArrayList<ModuleInfo> listArray){
         mContext = context;
+        mMainActivity = (MainActivity)context;
         mListArray = listArray;
     }
     @NonNull
@@ -58,7 +59,7 @@ public class ModuleAdapter extends RecyclerView.Adapter {
         return mListArray.size();
     }
 
-    private class ItemHolder extends RecyclerView.ViewHolder {
+    class ItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ll_item)
         LinearLayout ll_item;
 

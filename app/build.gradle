@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+/*apply plugin: 'kotlin-kapt'*/
+
 android {
     namespace 'com.example.mobilehelper'
     compileSdk 32
@@ -28,6 +30,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -38,5 +42,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.jakewharton:butterknife:10.2.3'
     androidTestImplementation 'com.jakewharton:butterknife-compiler:10.2.3'
-    //kapt 'com.jakewharton:butterknife-compiler:10.2.3' //加上这就 bindview才不能空 (可能是在kotlin上使用的，我这里报错）
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3' //加上这个才不报空指针
+    /*kapt 'com.jakewharton:butterknife-compiler:10.2.3' //加上这就 bindview才不能空*/
 }

@@ -13,4 +13,6 @@
     <color name="transparent">#00000000</color>
     <color name="blue">#0099ff</color>
     <color name="green">#00ff99</color>
+    <color name="seekbar">#4395ff</color>
+    <color name="seekbar_bg">#eef0f4</color>
 </resources>

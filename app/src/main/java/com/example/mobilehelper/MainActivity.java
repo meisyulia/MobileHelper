@@ -18,6 +18,7 @@ import com.example.mobilehelper.fragment.WifiFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -42,6 +43,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+    }
+
+    @OnClick(R.id.iv_back)
+    public void switchMain(){
+        switchPage(Constants.FUN_DEFAULT);
     }
 
     @Override
