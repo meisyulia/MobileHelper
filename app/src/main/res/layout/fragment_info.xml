@@ -6,20 +6,18 @@
     android:background="@color/white">
 
     <RelativeLayout
-        android:id="@+id/rl_itemStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:gravity="center_vertical">
         <TextView
             style="@style/tv_title"
-            android:text="移动数据"/>
+            android:text="电量"/>
         <TextView
-            android:id="@+id/tv_status"
+            android:id="@+id/tv_battery"
             style="@style/tv_title"
-            android:text="关"
             android:textColor="@color/grey"
-            android:drawableRight="@drawable/ic_right_32"
+            android:text="未知"
             android:drawablePadding="20dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
@@ -33,11 +31,12 @@
         android:gravity="center_vertical">
         <TextView
             style="@style/tv_title"
-            android:text="信号强度"/>
+            android:text="内部存储"/>
         <TextView
-            android:id="@+id/tv_rssi"
+            android:id="@+id/tv_romSize"
             style="@style/tv_title"
             android:textColor="@color/grey"
+            android:text="无"
             android:drawablePadding="20dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
@@ -51,11 +50,12 @@
         android:gravity="center_vertical">
         <TextView
             style="@style/tv_title"
-            android:text="卡槽数量"/>
+            android:text="SD卡存储"/>
         <TextView
-            android:id="@+id/tv_slotCount"
+            android:id="@+id/tv_sdSize"
             style="@style/tv_title"
             android:textColor="@color/grey"
+            android:text="无"
             android:drawablePadding="20dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
@@ -69,27 +69,59 @@
         android:gravity="center_vertical">
         <TextView
             style="@style/tv_title"
-            android:text="SIM卡数量"/>
+            android:text="音量"/>
         <TextView
-            android:id="@+id/tv_simCount"
+            android:id="@+id/tv_volume"
             style="@style/tv_title"
             android:textColor="@color/grey"
+            android:text="0"
             android:drawablePadding="20dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    <SeekBar
+        android:id="@+id/sb_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="5dp"
+        android:maxHeight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:thumb="@drawable/thumb_point"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:splitTrack="false" />
     <View
         style="@style/view_1dp"/>
-    <TextView
-        android:id="@+id/tv_sim_info"
-        android:layout_margin="10dp"
-        style="@style/tv_content_left"
-        android:text=""/>
 
-    <!--<TextView
-        android:id="@+id/tv_sim_two"
-        android:layout_margin="20dp"
-        style="@style/tv_content_left"
-        android:text=""/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/tv_title"
+            android:text="屏幕亮度"/>
+        <TextView
+            android:id="@+id/tv_brightness"
+            style="@style/tv_title"
+            android:textColor="@color/grey"
+            android:text="0"
+            android:drawablePadding="20dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <SeekBar
+        android:id="@+id/sb_brightness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="5dp"
+        android:maxHeight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:thumb="@drawable/thumb_point"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:splitTrack="false" />
+    <View
+        style="@style/view_1dp"/>
+
 
 
 

@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="无"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
     </RelativeLayout>
 
     <TextView
@@ -53,6 +53,6 @@
         android:id="@+id/rv_allWifi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey"/>
+        />
 
 </LinearLayout>

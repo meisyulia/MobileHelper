@@ -54,7 +54,7 @@ public class MainFragment extends BaseFragment{
         rv_main.setLayoutManager(linearLayoutManager);
         rv_main.setAdapter(mModAdapter);
         rv_main.setItemAnimator(new DefaultItemAnimator());
-        rv_main.addItemDecoration(new SpacesItemDecoration(1));
+        rv_main.addItemDecoration(new SpacesItemDecoration(2,mContext.getResources().getColor(R.color.black)));
 
     }
 

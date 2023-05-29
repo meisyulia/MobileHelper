@@ -1,10 +1,12 @@
 package com.example.mobilehelper;
 
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentContainerView;
 
@@ -15,6 +17,7 @@ import com.example.mobilehelper.fragment.MainFragment;
 import com.example.mobilehelper.fragment.MobileFragment;
 import com.example.mobilehelper.fragment.SpeedFragment;
 import com.example.mobilehelper.fragment.WifiFragment;
+import com.example.mobilehelper.util.PermissionUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
     }
 
     @OnClick(R.id.iv_back)
@@ -55,11 +57,33 @@ public class MainActivity extends BaseActivity {
         switchPage(Constants.FUN_DEFAULT);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //检测所有权限
+        checkAllPermission();
+    }
+
+    private void checkAllPermission() {
+        boolean isPermission = PermissionUtil.checkMultiPermission(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                }, R.id.fcv_maincontain % 4096);
+        if (!isPermission){
+            Toast.makeText(this, "需要允许权限才能正常使用哦", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
     public void switchPage(int pageType){
         iv_back.setVisibility(View.VISIBLE);
         switch (pageType) {
             case Constants.FUN_WIFI:
-                tv_title.setText("Wifi小助理");
+                tv_title.setText("WIFI小助理");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fcv_maincontain,
                         new WifiFragment(),WifiFragment.class.getSimpleName()).commitAllowingStateLoss();
                 break;
@@ -90,5 +114,6 @@ public class MainActivity extends BaseActivity {
                         new MainFragment(),MainFragment.class.getSimpleName()).commitAllowingStateLoss();
         }
     }
+
 
 }

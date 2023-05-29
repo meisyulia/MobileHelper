@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.example.mobilehelper"
         minSdk 21
-        targetSdk 32
+        targetSdk 28
         versionCode 1
         versionName "1.0"
 
@@ -44,4 +44,5 @@ dependencies {
     androidTestImplementation 'com.jakewharton:butterknife-compiler:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3' //加上这个才不报空指针
     /*kapt 'com.jakewharton:butterknife-compiler:10.2.3' //加上这就 bindview才不能空*/
+    implementation 'com.google.code.gson:gson:2.8.7'
 }

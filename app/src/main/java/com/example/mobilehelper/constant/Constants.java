@@ -13,4 +13,6 @@ public class Constants {
     public static final int FUN_INFO = 4;
 
     public static final int FUN_DEFAULT = 5;
+
+
 }

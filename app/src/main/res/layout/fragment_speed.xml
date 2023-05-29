@@ -18,7 +18,7 @@
             android:id="@+id/tv_status"
             style="@style/tv_title"
             android:textColor="@color/grey"
-            android:text="不可用"
+            android:text=""
             android:drawablePadding="20dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
