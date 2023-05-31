@@ -134,7 +134,7 @@ public class WifiInfoDlgFragment extends DialogFragment {
 
     @OnClick(R.id.btn_delete)
     public void deleteWifi(){
-        if (mWifiStatus==2){
+        /*if (mWifiStatus==2){
             if (mWifiFig!= null){
                 boolean isRemoved = mWifiUtil.removeConfig(mWifiFig);
                 showRemoveResult(isRemoved);
@@ -146,7 +146,12 @@ public class WifiInfoDlgFragment extends DialogFragment {
                 boolean isRemoved = mWifiUtil.removeConfig(mWifiFig);
                 showRemoveResult(isRemoved);
             }
+        }*/
+        if (mWifiFig!= null){
+            boolean isRemoved = mWifiUtil.removeConfig(mWifiFig);
+            showRemoveResult(isRemoved);
         }
+        mWifiUtil.disconnectWifi();
         dismiss();
     }
 
@@ -163,8 +168,11 @@ public class WifiInfoDlgFragment extends DialogFragment {
         //有保存信息的情况下连接WiFi
         if (mWifiFig!=null){
             boolean isSuccess = mWifiUtil.connectByNetId(mWifiFig);
-            String desc = isSuccess?"连接成功":"连接失败";
-            Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+            if(!isSuccess){
+                String desc = "连接失败";
+                Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+            }
+
         }
         dismiss();
     }

@@ -17,11 +17,12 @@ public class NetworkSpeedTestUtil {
     private final Context mContext;
     //private String mDownloadUrl = "http://ipv4.download.thinkbroadband.com/1GB.zip"; // 测试下载速度的url
     //private String mDownloadUrl = "http://download.qiniup.com/test"; // 测试下载速度的url
-    //https://acc-huahui.oss-cn-shenzhen.aliyuncs.com/cash/iot/antiepidemic/20230512/XFaceGate-Yct-V3.1.8_release_20230512_144535
-    private String mDownloadUrl = "https://acc-huahui.oss-cn-shenzhen.aliyuncs.com/cash/iot/antiepidemic/20220601/RC23-PDA-shanghai-release-v1.0.6_20220601152958.apk"; // 测试下载速度的url
+    //private String mDownloadUrl = "https://res06.bignox.com/full/20230330/e06d3b5f11c04d2cabe19ab695184552.exe?filename=nox_setup_v7.0.5.6_full.exe"; // 测试下载速度的url
+    private String mDownloadUrl = "https://jp.testmy.net/b/download";
     //private String mUploadUrl = "https://upload.qiniup.com/test";
     //private String mUploadUrl = "http://speedtest.tele2.net/upload.php";  //
-    private String mUploadUrl = "http://speed.139site.com/";
+    //private String mUploadUrl = "http://speed.139site.com/";
+    private String mUploadUrl = "https://testmy.net/upload";
     private int mFileSize = 1048576; // 测试下载或上传速度的文件大小 1M
     private int mTestInterval = 1000; // 测试间隔 1秒
 

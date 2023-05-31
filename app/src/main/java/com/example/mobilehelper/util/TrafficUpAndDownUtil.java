@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
+import android.util.Log;
 
 import java.math.BigDecimal;
 
 public class TrafficUpAndDownUtil {
 
+    private static final String TAG = "TrafficUpAndDownUtil";
     private static long mLastTotalUp = 0l;
     private static long mLastTimeUp = 0l;
     private static long mCurrentTotalUp;
@@ -30,10 +32,15 @@ public class TrafficUpAndDownUtil {
         long currentTime = System.currentTimeMillis();
         mCurrentTotalUp = currentTotalTxBytes - mLastTotalUp;
         //计算
-        mTotalUpSpeed = new BigDecimal((mCurrentTotalUp / 1024) * 1000 / (currentTime - mLastTimeUp) * 1.0);
-        mLastTotalUp = currentTotalTxBytes;
-        mLastTimeUp = currentTime;
-        return mTotalUpSpeed;
+        long interval_time = currentTime - mLastTimeUp;
+        if (interval_time!=0){
+            mTotalUpSpeed = new BigDecimal(((mCurrentTotalUp* 1.0 /1024)*1000  / interval_time));
+            //Log.i(TAG, "getTotalUpSpeed: mTotalUpSpeed="+mTotalUpSpeed);
+            mLastTotalUp = currentTotalTxBytes;
+            mLastTimeUp = currentTime;
+            return mTotalUpSpeed;
+        }
+        return null;
     }
 
     public static BigDecimal getTotalDownSpeed(){
@@ -41,9 +48,15 @@ public class TrafficUpAndDownUtil {
         long currentTime = System.currentTimeMillis();
         mCurrentTotalDown = currentTotalRxBytes - mLastTotalDown;
         //计算
-        mTotalDownSpeed = new BigDecimal((mCurrentTotalDown / 1024) * 1000 / (currentTime - mLastTimeDown) * 1.0);
-        mLastTotalDown = currentTotalRxBytes;
-        mLastTimeDown = currentTime;
-        return mTotalDownSpeed;
+        long interval_time = currentTime-mLastTimeDown;
+        if (interval_time!=0){
+            mTotalDownSpeed = new BigDecimal(((mCurrentTotalDown* 1.0 /1024)*1000 / interval_time));
+           // Log.i(TAG, "getTotalDownSpeed: mTotalDownSpeed="+mTotalDownSpeed);
+            mLastTotalDown = currentTotalRxBytes;
+            mLastTimeDown = currentTime;
+            return mTotalDownSpeed;
+        }
+        return null;
     }
+
 }

@@ -65,10 +65,11 @@ public class WifiUtil {
             }
         }
         //同时如果有连接的设备放在列表的第一位
-        String bssid = getConnectWifiBSSID();
+        String ssid = getConnectWifiSSID();
+        //Log.i(TAG, "wifiState getWifiScanResult: 刷新列表：ssid:"+ssid);
         for (int i = 0; i < newScanResults.size(); i++) {
             ScanResult scanResult = newScanResults.get(i);
-            if (TextUtils.equals(bssid, scanResult.BSSID)) {
+            if (TextUtils.equals(ssid, scanResult.SSID)) {
                 newScanResults.remove(i);
                 newScanResults.add(0, scanResult);
             }
@@ -323,6 +324,16 @@ public class WifiUtil {
      */
     public static boolean is5GHz(int freq) {
         return freq > 4900 && freq < 5900;
+    }
+
+    public String getFreRange(int frequency) {
+        if (is24GHz(frequency)){
+            return "2.4GHz";
+        }else if (is5GHz(frequency)){
+            return "5GHz";
+        }else{
+            return "未知";
+        }
     }
 
 

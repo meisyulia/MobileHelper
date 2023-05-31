@@ -79,23 +79,20 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
     @Override
     protected void initView() {
         ck_status.setChecked(mWifiUtil.getWifiStatus());
-        ck_status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                /*if (Build.VERSION.SDK_INT < 29){
-                    WifiUtil.setWifiStatus(mContext,isChecked); //在Android10以上已不起效
-                }else {
-                    //Android10以上如何处理？
-                    // 打开系统的快速设置面板 方法一：
-                    Intent panelIntent = new Intent(Settings.Panel.ACTION_WIFI);
-                       startActivity(panelIntent);
-                }*/
-                if (ClickUtil.isFastClick()){
-                    return;
-                }
-                mWifiUtil.setWifiStatus(isChecked); //在Android10以上已不起效 ，将targetSdk版本设置到28，可以触发权限判断（卡了我好久！！！！！）
-
+        ck_status.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            /*if (Build.VERSION.SDK_INT < 29){
+                WifiUtil.setWifiStatus(mContext,isChecked); //在Android10以上已不起效
+            }else {
+                //Android10以上如何处理？
+                // 打开系统的快速设置面板 方法一：
+                Intent panelIntent = new Intent(Settings.Panel.ACTION_WIFI);
+                   startActivity(panelIntent);
+            }*/
+            if (ClickUtil.isFastClick()){
+                return;
             }
+            mWifiUtil.setWifiStatus(isChecked); //在Android10以上已不起效 ，将targetSdk版本设置到28，可以触发权限判断（卡了我好久！！！！！）
+
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
@@ -110,7 +107,9 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION); //监听wifi扫描结果
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION); //监听wifi是开关变化的状态
-        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION); // 监听wifi是否连接成功的广播
+        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION); // 监听网络状态变化的广播
+        //intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //监听连接结果
+        //intentFilter.addAction(WifiManager.NETWORK_IDS_CHANGED_ACTION); //WiFi网络ID列表发生变化时,没起效
         mContext.registerReceiver(mWifiReceiver, intentFilter);
     }
 
@@ -127,8 +126,7 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
     public void onResume() {
         super.onResume();
         //长时间不进去，进行是当前页面时再获取一次
-        mScanResults = mWifiUtil.getWifiScanResult();
-        mWifiAllAdapter.setScanResults(mScanResults);
+        refreshScanList();
     }
 
     @Override
@@ -136,17 +134,17 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
         int wifiStatus = info.getWifiStatus();
         String wifiInfo = GsonUtil.toJsonString(info);
         if (wifiStatus==0){
-            linkDlgFragment = WifiLinkDlgFragment.newInstance(wifiInfo);
-            if (linkDlgFragment.isResumed()){
+            if ((linkDlgFragment!= null &&linkDlgFragment.isResumed() )|| ClickUtil.isFastClick(800)){
                 return;
             }
+            linkDlgFragment = WifiLinkDlgFragment.newInstance(wifiInfo);
             linkDlgFragment.showNow(getActivity().getSupportFragmentManager(), WifiLinkDlgFragment.class.getSimpleName());
             linkDlgFragment.setCancelable(false);
         }else{
-            infoDlgFragment = WifiInfoDlgFragment.newInstance(wifiInfo);
-            if (infoDlgFragment.isResumed()){
+            if ((infoDlgFragment!=null && infoDlgFragment.isResumed()) || ClickUtil.isFastClick(800)){
                 return;
             }
+            infoDlgFragment = WifiInfoDlgFragment.newInstance(wifiInfo);
             infoDlgFragment.showNow(getActivity().getSupportFragmentManager(), WifiInfoDlgFragment.class.getSimpleName());
             infoDlgFragment.setCancelable(false);
         }
@@ -162,17 +160,15 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 // 获取WiFi列表信息
-                mScanResults = mWifiUtil.getWifiScanResult();
-                mWifiAllAdapter.setScanResults(mScanResults);
-                // 重新扫描WiFi列表信息
-                mWifiMgr.startScan();
+                refreshScanList();
             }else if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
                 // 获取WiFi列表信息
                 /*mScanResults = mWifiUtil.getWifiScanResult();
                 mWifiAllAdapter.setScanResults(mScanResults);*/
                 showWifiState(wifiState);
-            } else if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+            } else if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+                    ) {
                 NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                 String state = "";
                 String ssid = "";
@@ -180,20 +176,31 @@ public class WifiFragment extends BaseFragment implements WifiAllAdapter.OnItemC
                 if (networkInfo != null && networkInfo.isConnectedOrConnecting()) { //在连接中或已连接才有ssid,否者ssid显示为：<unknown ssid>
                     /*WifiInfo wifiInfo = mWifiMgr.getConnectionInfo();
                     String ssid = wifiInfo.getSSID().replace("\"", ""); // 获取已连接WiFi名称*/
+                    refreshScanList();
                     state = mWifiUtil.getConnectState(networkInfo);
                     ssid = mWifiUtil.getConnectWifiSSID();
                     bssid = mWifiUtil.getConnectWifiBSSID();
+                    mWifiAllAdapter.setOtherInfo(state,ssid);
+
+                }
+                if (networkInfo !=null && networkInfo.isConnected()){
                     tv_connectWifi.setText(ssid);
                 } else {
                     tv_connectWifi.setText("未连接WIFI");
                 }
-                mWifiAllAdapter.setOtherInfo(state,bssid);
-                mScanResults = mWifiUtil.getWifiScanResult();
-                mWifiAllAdapter.setScanResults(mScanResults);
+
+                /*mScanResults = mWifiUtil.getWifiScanResult();
+                mWifiAllAdapter.setScanResults(mScanResults);*/
             }
         }
     }
 
+    private void refreshScanList() {
+        mScanResults = mWifiUtil.getWifiScanResult();
+        mWifiAllAdapter.setScanResults(mScanResults);
+        // 重新扫描WiFi列表信息
+        mWifiMgr.startScan();
+    }
 
 
     private void showWifiState(int  wifiState) {

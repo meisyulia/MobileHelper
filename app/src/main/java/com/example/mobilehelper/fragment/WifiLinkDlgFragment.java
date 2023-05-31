@@ -133,7 +133,10 @@ public class WifiLinkDlgFragment extends DialogFragment {
     }
 
     private void showLinkResult(boolean isSuccess) {
-        String desc = isSuccess?"连接成功":"连接失败";
-        Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+        if (!isSuccess){
+            String desc = "连接失败";
+            Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

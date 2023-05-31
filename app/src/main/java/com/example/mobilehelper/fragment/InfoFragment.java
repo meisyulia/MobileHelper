@@ -22,13 +22,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mobilehelper.R;
+import com.example.mobilehelper.callback.BatteryChangeListener;
+import com.example.mobilehelper.receiver.BatteryChangeReceiver;
 import com.example.mobilehelper.util.StorageUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class InfoFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
+public class InfoFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener, BatteryChangeListener {
 
     private static final String TAG = "InfoFragment";
     private Context mContext;
@@ -135,6 +137,7 @@ public class InfoFragment extends BaseFragment implements SeekBar.OnSeekBarChang
         batteryChangeReceiver = new BatteryChangeReceiver();
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         mContext.registerReceiver(batteryChangeReceiver, filter);
+        batteryChangeReceiver.setBatteryChangeListener(this);
         //监听存储变化
         StorageUtil.startMonitoring(mContext, new StorageUtil.OnStorageChangeListener() {
             @Override
@@ -229,7 +232,12 @@ public class InfoFragment extends BaseFragment implements SeekBar.OnSeekBarChang
         }
     }
 
-    // 定义一个电量变化的广播接收器
+    @Override
+    public void onBatteryChange(int level) {
+        tv_battery.setText(level+"%");
+    }
+
+    /*// 定义一个电量变化的广播接收器
     private class BatteryChangeReceiver extends BroadcastReceiver {
 
         @Override
@@ -240,7 +248,7 @@ public class InfoFragment extends BaseFragment implements SeekBar.OnSeekBarChang
                 tv_battery.setText(level+"%");
             }
         }
-    }
+    }*/
 
     private class VolumeChangeReceiver extends BroadcastReceiver{
 

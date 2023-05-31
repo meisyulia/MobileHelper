@@ -14,7 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.mobilehelper.R;
+import com.example.mobilehelper.util.DataUtil;
 import com.example.mobilehelper.util.NetworkSpeedTestUtil;
+import com.example.mobilehelper.util.TrafficUpAndDownUtil;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,31 +80,29 @@ public class SpeedFragment extends BaseFragment{
     private double mDownloadSpeed;
     /*private float mUploadSpeed;
             private float mDownloadSpeed;*/
-    //private BigDecimal totalDownSpeed;
-    //private BigDecimal totalUpSpeed;
+    private BigDecimal totalDownSpeed;
+    private BigDecimal totalUpSpeed;
     private Runnable mNetworkTest = new Runnable() {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void run() {
             //updateNetworkSpeed();
             new Thread(mGetSpeed).start();
-            mHandler.postDelayed(this,1000);
+            //mHandler.postDelayed(this,1000);
         }
     };
 
     private Runnable mGetSpeed = new Runnable() {
-
-
-
         @Override
         public void run() {
-            mIsAvailable = mNetworkSpeedUtil.isNetworkAvailable();
+           /* mIsAvailable = mNetworkSpeedUtil.isNetworkAvailable();
             mUploadSpeed = mNetworkSpeedUtil.getUploadSpeed();
-            mDownloadSpeed = mNetworkSpeedUtil.getDownloadSpeed();
-            /*mIsAvailable = TrafficUpAndDownUtil.isNetworkAvailable(mContext);
+            mDownloadSpeed = mNetworkSpeedUtil.getDownloadSpeed();*/
+            mIsAvailable = TrafficUpAndDownUtil.isNetworkAvailable(mContext);
             totalUpSpeed = TrafficUpAndDownUtil.getTotalUpSpeed();
-            totalDownSpeed = TrafficUpAndDownUtil.getTotalDownSpeed();*/
+            totalDownSpeed = TrafficUpAndDownUtil.getTotalDownSpeed();
             mHandler.post(mShowText);
+            mHandler.postDelayed(this,1000);
         }
     };
 
@@ -112,8 +114,10 @@ public class SpeedFragment extends BaseFragment{
                 if (mIsAvailable){
                     /*tv_downSpeed.setText(mDownloadSpeed+"k/s");
                     tv_upSpeed.setText(mUploadSpeed+"k/s");*/
-                    tv_downSpeed.setText(String.format("%.2fk/s",mDownloadSpeed));
-                    tv_upSpeed.setText(String.format("%.2fk/s",mUploadSpeed));
+                    /*tv_downSpeed.setText(String.format("%.2fk/s",mDownloadSpeed));
+                    tv_upSpeed.setText(String.format("%.2fk/s",mUploadSpeed));*/
+                    tv_downSpeed.setText(String.format("%sk/s", DataUtil.getTwoBigDecimal(totalDownSpeed).toString()));
+                    tv_upSpeed.setText(String.format("%sk/s",DataUtil.getTwoBigDecimal(totalUpSpeed).toString()));
                     /*tv_downSpeed.setText(totalDownSpeed.toString()+"k/s");
                     tv_upSpeed.setText(totalUpSpeed.toString()+"k/s");*/
                 }else{

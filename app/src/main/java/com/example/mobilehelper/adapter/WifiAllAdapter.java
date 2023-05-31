@@ -38,14 +38,14 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
     private final WifiUtil mWifiUtil;
     private List<ScanResult> mScanResults;
     private String wifiState;
-    private String connectedBSSID;
+    private String connectedSSID;
 
     public WifiAllAdapter(Context context,List<ScanResult> ScanResults){
         mContext = context;
         mWifiUtil = new WifiUtil(mContext);
         mScanResults = ScanResults;
         wifiState = "";
-        connectedBSSID = "";
+        connectedSSID = "";
     }
     @NonNull
     @Override
@@ -65,9 +65,9 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
         WifiInfo wifiInfo = getWifiInfo(scanResult);
         ItemHolder itemHolder = (ItemHolder) holder;
         itemHolder.tv_ssid.setText(wifiInfo.getSsid());
-        //Log.i(TAG, "onBindViewHolder: wifiInfo="+wifiInfo+",connectedSSID="+connectedSSID+",ssid="+ssid);
-        Log.i(TAG, "onBindViewHolder: wifiInfo.getWifiStatus()="+wifiInfo.getWifiStatus());
-        if (TextUtils.equals(wifiInfo.getBssid(),connectedBSSID) && !TextUtils.isEmpty(wifiState)){
+        //Log.i(TAG, "onBindViewHolder: wifiState="+wifiState+",connectedSSID="+connectedSSID);
+        //Log.i(TAG, "onBindViewHolder: wifiInfo.getWifiStatus()="+wifiInfo.getWifiStatus());
+        if (TextUtils.equals(wifiInfo.getSsid(),connectedSSID) && !TextUtils.isEmpty(wifiState)){
             itemHolder.tv_otherInfo.setText(wifiState);
         }else if (wifiInfo.getWifiStatus()==1){
             itemHolder.tv_otherInfo.setText("已保存,"+mWifiUtil.getSecurityType(wifiInfo.getCapabilities()));
@@ -85,10 +85,10 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
         });
     }
 
-    public void setOtherInfo(String wifiState,String connectedBSSID){
-        Log.i(TAG, "setOtherInfo: wifiState="+wifiState+",connectedBSSID="+connectedBSSID);
+    public void setOtherInfo(String wifiState,String connectedSSID){
+        Log.i(TAG, "setOtherInfo: wifiState="+wifiState+",connectedSSID="+connectedSSID);
         this.wifiState = wifiState;
-        this.connectedBSSID = connectedBSSID;
+        this.connectedSSID = connectedSSID;
         notifyDataSetChanged();
     }
 
@@ -100,12 +100,12 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
         int level = scanResult.level; // 获取WiFi信号强度
         int strength = mWifiUtil.getWifiStrength(level);//获取强度等级（0-4）
         int frequency = scanResult.frequency; //获取频率
-        String freRange = getFreRange(frequency);
+        String freRange = mWifiUtil.getFreRange(frequency);
         /*String info = "SSID: " + ssid + "\n" + "Capabilities: " + capabilities + "\n" + "Level: " + level
                 +"\n" + "Strength:"+strength+"\n" + "Frequency:"+frequency;
         Log.i(TAG, "getWifiInfo: info="+info);*/
         WifiConfiguration wifiConfiguration = mWifiUtil.isExits(ssid);
-        if (TextUtils.equals(bssid,connectedBSSID) && TextUtils.equals("已连接",wifiState)){
+        if (TextUtils.equals(ssid,connectedSSID) && TextUtils.equals("已连接",wifiState)){
             wifiInfo.setWifiStatus(2);
             wifiInfo.setLinkSpeed(mWifiUtil.getConnWifiSpeed());
         }else if (wifiConfiguration!=null){
@@ -121,7 +121,7 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
         return wifiInfo;
     }
 
-    private String getFreRange(int frequency) {
+    /*private String getFreRange(int frequency) {
         if (is24GHz(frequency)){
             return "2.4GHz";
         }else if (is5GHz(frequency)){
@@ -129,7 +129,7 @@ public class WifiAllAdapter extends RecyclerView.Adapter {
         }else{
             return "未知";
         }
-    }
+    }*/
 
     @Override
     public int getItemCount() {
